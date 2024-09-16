@@ -1,7 +1,5 @@
 Syed Mohamad Tawseeq          
 
-![avatar](./assets/img/be_tajpur.jpg)
-
 Syed Mohamad Tawseeq
 ====================
 
