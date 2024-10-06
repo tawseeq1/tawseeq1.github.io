@@ -11,7 +11,7 @@ tawseeq@kgpian.iitkgp.ac.in
 About Me
 --------
 
-I am a 3rd-year undergraduate student at the [Indian Institute of Technology, Kharagpur](https://www.iitkgp.ac.in/), pursuing my bachelor's degree in Chemical Engineering with a minor in Mathematics & Computing, specializing in Artificial Intelligence & Applications. My primary interests lie in Deep Learning, with a particular focus on Multimodal Learning, where I am keen on exploring how different modalities like text, images, and videos can be integrated for enhanced AI capabilities.
+I am a 3rd-year undergraduate student at the [Indian Institute of Technology, Kharagpur](https://www.iitkgp.ac.in/), pursuing my bachelor's degree in Chemical Engineering with a minor in Mathematics & Computing, specializing in Artificial Intelligence & Applications. My primary interests lie in Deep Learning, with a particular focus on Multimodal Learning, where I am keen on exploring how different modalities like text, images, and videos can be integrated for enhanced AI capabilities. As a dedicated student passionate about artificial intelligence, I am eager to embark on a research career focused on advancing AI systems and ensuring their responsible development.
 
 Research Interests
 ------------------
