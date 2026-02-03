@@ -2,7 +2,7 @@ import { Profile, NewsItem, Publication, ResearchInterest, SocialLink } from './
 
 export const PROFILE: Profile = {
   name: "Syed Mohamad Tawseeq",
-  title: "Undergraduate Student",
+  title: "Undergraduate",
   affiliation: "Indian Institute of Technology Kharagpur",
   location: "Srinagar, Jammu and Kashmir, India",
   email: "theguysta56@gmail.com",
