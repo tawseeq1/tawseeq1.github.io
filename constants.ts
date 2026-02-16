@@ -12,7 +12,7 @@ export const PROFILE: Profile = {
 
 export const SOCIAL_LINKS: SocialLink[] = [
   { platform: 'email', url: 'mailto:theguysta56@gmail.com' },
-  // { platform: 'scholar', url: 'https://scholar.google.com', username: '' },
+  { platform: 'scholar', url: 'https://scholar.google.com', username: 'CijNWhoAAAAJ' },
   { platform: 'github', url: 'https://github.com/tawseeq1', username: 'tawseeq1' },
   { platform: 'twitter', url: 'https://twitter.com/smta56', username: '@smta56' },
   { platform: 'linkedin', url: 'https://www.linkedin.com/in/tawseeq/' },
