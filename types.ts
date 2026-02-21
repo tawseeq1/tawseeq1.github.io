@@ -38,6 +38,5 @@ export interface Profile {
   affiliation: string;
   bio: string;
   email: string;
-  location: string;
   avatarUrl: string;
 }
