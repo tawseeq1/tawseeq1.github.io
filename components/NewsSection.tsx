@@ -2,12 +2,17 @@ import React from 'react';
 import { NEWS } from '../constants';
 
 const NewsSection: React.FC = () => {
-  // Helper to process markdown-like bold text (simple implementation)
+  // Helper to process markdown-like bold text and links
   const renderContent = (text: string) => {
-    const parts = text.split(/(\*\*.*?\*\*)/g);
+    // Split on both bold (**...**) and links ([text](url))
+    const parts = text.split(/(\*\*.*?\*\*|\[.*?\]\(.*?\))/g);
     return parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**')) {
         return <strong key={i} className="font-semibold text-academic-900">{part.slice(2, -2)}</strong>;
+      }
+      const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+      if (linkMatch) {
+        return <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{linkMatch[1]}</a>;
       }
       return part;
     });
