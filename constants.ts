@@ -25,7 +25,7 @@ export const INTERESTS: ResearchInterest[] = [
 ];
 
 export const NEWS: NewsItem[] = [
-  // { date: "May 2024", content: "One paper accepted to **CVPR 2024**! See you in Seattle." },
+  { date: "Feb 2026", content: "[EXPERIGEN: Accelerating Social Science Research via Agentic Hypothesization and Experimentation](https://arxiv.org/abs/2602.07983) is now on arXiv." },
   { date: "May 2025", content: "Started my research internship at Adobe MDSR Lab." },
   // { date: "Dec 2023", content: "Presented our work on NeRFs at **NeurIPS 2023**." },
   // { date: "Sep 2023", content: "Advanced to Ph.D. candidacy." },
