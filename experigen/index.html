@@ -227,17 +227,71 @@
         </div>
     </section>
 
-    <!-- Key Results Section -->
+    <!-- Key Results Section with Tabs -->
     <section class="section" id="KeyResults">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-six-fifths">
                     <h2 class="title is-3" style="margin-bottom: 8px;">Key Results</h2>
-                    <p style="color: #666; font-size: 1.05rem; margin-bottom: 28px;">
-                        Predictive accuracy (%) on representative benchmarks using <b>GPT-4o</b>
-                    </p>
 
                     <style>
+                        /* ── Tab Switcher ── */
+                        .results-tabs {
+                            display: inline-flex;
+                            background: #eee;
+                            border-radius: 10px;
+                            padding: 4px;
+                            margin-bottom: 22px;
+                            gap: 4px;
+                        }
+
+                        .results-tab-btn {
+                            padding: 9px 22px;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 0.88rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            background: transparent;
+                            color: #777;
+                            transition: all 0.25s ease;
+                            letter-spacing: 0.2px;
+                        }
+
+                        .results-tab-btn:hover {
+                            color: #333;
+                            background: rgba(255, 255, 255, 0.5);
+                        }
+
+                        .results-tab-btn.active {
+                            background: #fff;
+                            color: #333;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+                        }
+
+                        /* ── Tab Panels ── */
+                        .results-tab-panel {
+                            display: none;
+                            animation: tabFadeIn 0.3s ease;
+                        }
+
+                        .results-tab-panel.active {
+                            display: block;
+                        }
+
+                        @keyframes tabFadeIn {
+                            from {
+                                opacity: 0;
+                                transform: translateY(6px);
+                            }
+
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+
+                        /* ── Shared Table Styles ── */
                         .results-table-wrapper {
                             overflow-x: auto;
                             border-radius: 14px;
@@ -259,7 +313,6 @@
                             font-weight: 600;
                             padding: 14px 15px;
                             text-align: center;
-                            letter-spacing: 0.3px;
                             border: none;
                             font-size: 0.88rem;
                             text-transform: uppercase;
@@ -369,88 +422,203 @@
                         }
                     </style>
 
-                    <div class="results-table-wrapper">
-                        <table class="results-table">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" style="vertical-align: middle;">Method</th>
-                                    <th colspan="3" style="border-bottom: 2px solid rgba(255,255,255,0.15);">HypoBench
-                                    </th>
-                                    <th colspan="4"
-                                        style="border-left: 2px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.15);">
-                                        Cross-Domain</th>
-                                </tr>
-                                <tr class="sub-header">
-                                    <th>Deception</th>
-                                    <th>News</th>
-                                    <th>Persuasion</th>
-                                    <th style="border-left: 2px solid rgba(255,255,255,0.1);">Twitter</th>
-                                    <th>Design</th>
-                                    <th>Congress</th>
-                                    <th>CMV</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="highlight-row">
-                                    <td>🏆 ExperiGen <span class="results-badge">Ours</span></td>
-                                    <td><span class="best-val">78.0</span></td>
-                                    <td><span class="best-val">70.0</span></td>
-                                    <td><span class="best-val">94.0</span></td>
-                                    <td><span class="best-val">67.0</span></td>
-                                    <td><span class="best-val">88.0</span></td>
-                                    <td><span class="best-val">79.4</span></td>
-                                    <td><span class="best-val">77.5</span></td>
-                                </tr>
-                                <tr>
-                                    <td>HypoGenic</td>
-                                    <td>76.0</td>
-                                    <td>63.2</td>
-                                    <td>93.0</td>
-                                    <td>60.3</td>
-                                    <td>84.3</td>
-                                    <td>72.6</td>
-                                    <td>61.0</td>
-                                </tr>
-                                <tr>
-                                    <td>HypotheSAEs</td>
-                                    <td>62.9</td>
-                                    <td>61.9</td>
-                                    <td>87.1</td>
-                                    <td>54.1</td>
-                                    <td>84.3</td>
-                                    <td>73.9</td>
-                                    <td>59.2</td>
-                                </tr>
-                                <tr>
-                                    <td>0-shot CoT</td>
-                                    <td>65.0</td>
-                                    <td>68.2</td>
-                                    <td>83.2</td>
-                                    <td>60.5</td>
-                                    <td>84.8</td>
-                                    <td>73.7</td>
-                                    <td>65.0</td>
-                                </tr>
-                                <tr>
-                                    <td>Few-shot CoT</td>
-                                    <td>64.8</td>
-                                    <td>67.2</td>
-                                    <td>81.0</td>
-                                    <td>58.6</td>
-                                    <td>84.6</td>
-                                    <td>72.6</td>
-                                    <td>69.0</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- Tab Buttons -->
+                    <div class="results-tabs">
+                        <button class="results-tab-btn active" onclick="switchResultsTab('hypo', this)">Significant
+                            Hypotheses</button>
+                        <button class="results-tab-btn" onclick="switchResultsTab('accuracy', this)">Predictive
+                            Accuracy</button>
                     </div>
-                    <p class="results-caption">
-                        In-domain predictive accuracy (%) with <b>GPT-4o</b> on select benchmarks spanning social media,
-                        news, psychology, design, and persuasion.
-                        <br>ExperiGen discovers <b>2–4× more</b> statistically significant hypotheses that are <b>7–17%
-                            more predictive</b>.
-                        <a href="https://arxiv.org/abs/2602.07983" target="_blank">See full results in the paper →</a>
-                    </p>
+
+                    <!-- ─── Panel 1: Significant Hypotheses (default) ─── -->
+                    <div id="panel-hypo" class="results-tab-panel active">
+                        <p style="color: #666; font-size: 1.0rem; margin-bottom: 18px;">
+                            Number of statistically significant hypotheses (<i>p</i> &lt; 0.05, Bonferroni-corrected)
+                            using <b>GPT-4o</b>
+                        </p>
+                        <div class="results-table-wrapper">
+                            <table class="results-table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" style="vertical-align: middle;">Method</th>
+                                        <th colspan="5" style="border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                            HypoBench</th>
+                                        <th colspan="5"
+                                            style="border-left: 2px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                            Cross-Domain</th>
+                                    </tr>
+                                    <tr class="sub-header">
+                                        <th>Decep.</th>
+                                        <th>News</th>
+                                        <th>Dread.</th>
+                                        <th>GPTgc</th>
+                                        <th>Pers.</th>
+                                        <th style="border-left: 2px solid rgba(255,255,255,0.1);">Twitter</th>
+                                        <th>Design</th>
+                                        <th>LaMem</th>
+                                        <th>Cong.</th>
+                                        <th>CMV</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="highlight-row">
+                                        <td>🏆 ExperiGen <span class="results-badge">Ours</span></td>
+                                        <td><span class="best-val">18</span></td>
+                                        <td><span class="best-val">21</span></td>
+                                        <td><span class="best-val">16</span></td>
+                                        <td><span class="best-val">14</span></td>
+                                        <td><span class="best-val">17</span></td>
+                                        <td><span class="best-val">19</span></td>
+                                        <td><span class="best-val">11</span></td>
+                                        <td><span class="best-val">5</span></td>
+                                        <td><span class="best-val">20</span></td>
+                                        <td><span class="best-val">16</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>HypoGenic</td>
+                                        <td>6</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                        <td>3</td>
+                                        <td>5</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                        <td>0</td>
+                                        <td>5</td>
+                                        <td>4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HypotheSAEs</td>
+                                        <td>8</td>
+                                        <td>12</td>
+                                        <td>6</td>
+                                        <td>5</td>
+                                        <td>7</td>
+                                        <td>12</td>
+                                        <td>6</td>
+                                        <td>0</td>
+                                        <td>12</td>
+                                        <td>8</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="results-caption">
+                            <br>ExperiGen discovers <b>2–4× more</b> significant hypotheses than baselines.
+                            On <b>LaMem</b>, ExperiGen is the <b>only</b> method to discover any significant hypotheses.
+                            <a href="https://arxiv.org/abs/2602.07983" target="_blank">See full results in the paper
+                                →</a>
+                        </p>
+                    </div>
+
+                    <!-- ─── Panel 2: Predictive Accuracy ─── -->
+                    <div id="panel-accuracy" class="results-tab-panel">
+                        <p style="color: #666; font-size: 1.0rem; margin-bottom: 18px;">
+                            Predictive accuracy (%) on representative benchmarks using <b>GPT-4o</b>
+                        </p>
+                        <div class="results-table-wrapper">
+                            <table class="results-table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" style="vertical-align: middle;">Method</th>
+                                        <th colspan="3" style="border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                            HypoBench</th>
+                                        <th colspan="4"
+                                            style="border-left: 2px solid rgba(255,255,255,0.1); border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                            Cross-Domain</th>
+                                    </tr>
+                                    <tr class="sub-header">
+                                        <th>Deception</th>
+                                        <th>News</th>
+                                        <th>Persuasion</th>
+                                        <th style="border-left: 2px solid rgba(255,255,255,0.1);">Twitter</th>
+                                        <th>Design</th>
+                                        <th>Congress</th>
+                                        <th>CMV</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="highlight-row">
+                                        <td>🏆 ExperiGen <span class="results-badge">Ours</span></td>
+                                        <td><span class="best-val">78.0</span></td>
+                                        <td><span class="best-val">70.0</span></td>
+                                        <td><span class="best-val">94.0</span></td>
+                                        <td><span class="best-val">67.0</span></td>
+                                        <td><span class="best-val">88.0</span></td>
+                                        <td><span class="best-val">79.4</span></td>
+                                        <td><span class="best-val">77.5</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>HypoGenic</td>
+                                        <td>76.0</td>
+                                        <td>63.2</td>
+                                        <td>93.0</td>
+                                        <td>60.3</td>
+                                        <td>84.3</td>
+                                        <td>72.6</td>
+                                        <td>61.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HypotheSAEs</td>
+                                        <td>62.9</td>
+                                        <td>61.9</td>
+                                        <td>87.1</td>
+                                        <td>54.1</td>
+                                        <td>84.3</td>
+                                        <td>73.9</td>
+                                        <td>59.2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0-shot CoT</td>
+                                        <td>65.0</td>
+                                        <td>68.2</td>
+                                        <td>83.2</td>
+                                        <td>60.5</td>
+                                        <td>84.8</td>
+                                        <td>73.7</td>
+                                        <td>65.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Few-shot CoT</td>
+                                        <td>64.8</td>
+                                        <td>67.2</td>
+                                        <td>81.0</td>
+                                        <td>58.6</td>
+                                        <td>84.6</td>
+                                        <td>72.6</td>
+                                        <td>69.0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="results-caption">
+                            In-domain predictive accuracy (%) with <b>GPT-4o</b> on select benchmarks spanning social
+                            media,
+                            news, psychology, design, and persuasion.
+                            <br>ExperiGen discovers <b>2–4× more</b> statistically significant hypotheses that are
+                            <b>7–17%
+                                more predictive</b>.
+                            <a href="https://arxiv.org/abs/2602.07983" target="_blank">See full results in the paper
+                                →</a>
+                        </p>
+                    </div>
+
+                    <script>
+                        function switchResultsTab(tabId, btnEl) {
+                            // Hide all panels
+                            document.querySelectorAll('.results-tab-panel').forEach(function (panel) {
+                                panel.classList.remove('active');
+                            });
+                            // Deactivate all buttons
+                            document.querySelectorAll('.results-tab-btn').forEach(function (btn) {
+                                btn.classList.remove('active');
+                            });
+                            // Activate chosen panel & button
+                            document.getElementById('panel-' + tabId).classList.add('active');
+                            btnEl.classList.add('active');
+                        }
+                    </script>
+
                 </div>
             </div>
         </div>
@@ -950,10 +1118,31 @@
                         </p>
 
                         <div
-                            style="border-radius: 8px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 8px; max-width: 70%; margin-left: auto; margin-right: auto;">
-                            <img src="images_experigen/experigen_Now3.png"
-                                alt="Design pairs showing balanced spacing and margins"
-                                style="width: 60%; display: block;">
+                            style="display: flex; gap: 16px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+                            <div style="text-align: center;">
+                                <div
+                                    style="border: 3px solid #4caf50; border-radius: 10px; overflow: hidden; display: inline-block;">
+                                    <img src="images_experigen/Lamem_more.png" alt="More memorable image"
+                                        style="display: block; max-height: 250px; width: auto;">
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span
+                                        style="background: rgba(76,175,80,0.9); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 12px; border-radius: 12px;">More
+                                        Memorable</span>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div
+                                    style="border: 3px solid #ef5350; border-radius: 10px; overflow: hidden; display: inline-block;">
+                                    <img src="images_experigen/Lamem_less.png" alt="Less memorable image"
+                                        style="display: block; max-height: 250px; width: auto;">
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span
+                                        style="background: rgba(239,83,80,0.9); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 12px; border-radius: 12px;">Less
+                                        Memorable</span>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -1034,7 +1223,7 @@
                 Please do not upload any private information. The service collects user dialogue data, including both
                 text and images, and reserves the right to distribute it under a Creative Commons Attribution (CC-BY) or
                 a similar license.
-                <br>They are also restricted to uses that follow the license agreement of Twitter, and LLaMA
+
             </p>
         </div>
     </section>
