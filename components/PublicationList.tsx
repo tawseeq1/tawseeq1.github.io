@@ -40,16 +40,27 @@ const PublicationList: React.FC = () => {
 
             {/* Authors */}
             <div className="text-academic-700 mb-2 text-base">
-              {pub.authors.map((author, idx) => (
-                <span key={idx}>
-                  {isMe(author) ? (
-                    <span className="font-bold underline decoration-academic-300 underline-offset-4 decoration-2">{author}</span>
-                  ) : (
-                    author
-                  )}
-                  {idx < pub.authors.length - 1 && ", "}
-                </span>
-              ))}
+              {pub.authors.map((author, idx) => {
+                const hasStar = author.includes('*');
+                const cleanName = author.replace('*', '');
+                
+                return (
+                  <span key={idx}>
+                    {isMe(author) ? (
+                      <span className="font-bold underline decoration-academic-300 underline-offset-4 decoration-2">
+                        {cleanName}
+                        {hasStar && <sup>*</sup>}
+                      </span>
+                    ) : (
+                      <>
+                        {cleanName}
+                        {hasStar && <sup>*</sup>}
+                      </>
+                    )}
+                    {idx < pub.authors.length - 1 && ", "}
+                  </span>
+                );
+              })}
             </div>
 
             {/* Venue & Year */}
