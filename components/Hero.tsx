@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { PROFILE, SOCIAL_LINKS, INTERESTS } from '../constants';
 import { Icons } from './Icons';
 import { SocialLink } from '../types';
@@ -28,9 +29,15 @@ const Hero: React.FC = () => {
             {PROFILE.title} at {PROFILE.affiliation}
           </h2>
 
-          <p className="text-academic-700 leading-relaxed mb-6 text-base sm:text-lg">
-            {PROFILE.bio}
-          </p>
+          <div className="text-academic-700 leading-relaxed mb-6 text-base sm:text-lg">
+            <ReactMarkdown
+              components={{
+                a: ({node, ...props}) => <a {...props} className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer" />
+              }}
+            >
+              {PROFILE.bio}
+            </ReactMarkdown>
+          </div>
 
           <div className="mb-8">
             <h3 className="text-xs uppercase tracking-wider font-bold text-academic-400 mb-3">Research Interests</h3>
