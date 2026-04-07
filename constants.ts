@@ -33,20 +33,20 @@ export const NEWS: NewsItem[] = [
 ];
 
 export const PUBLICATIONS: Publication[] = [
-  // {
-  //   id: "p1",
-  //   title: "Efficient 3D Scene Generation via Latent Diffusion Models",
-  //   authors: ["Alex J. Researcher", "Jane Doe", "John Smith"],
-  //   venue: "CVPR 2024 (Oral)",
-  //   year: 2024,
-  //   description: "We propose a novel method for generating high-fidelity 3D scenes using latent diffusion, achieving 10x faster inference speeds.",
-  //   tags: ["Generative AI", "3D Vision"],
-  //   links: [
-  //     { label: "PDF", url: "#", type: "pdf" },
-  //     { label: "Code", url: "#", type: "code" },
-  //     { label: "Project Page", url: "#", type: "website" },
-  //   ]
-  // },
+  {
+    id: "p1",
+    title: "Accelerating Social Science Research via Agentic Hypothesization and Experimentation",
+    authors: ["Jishu Sen Gupta", "Harini SI", "Somesh Kumar Singh", "Syed Mohamad Tawseeq", "Yaman Kumar Singla", "David Doermann", "Rajiv Ratn Shah", "Balaji Krishnamurthy"],
+    venue: "",
+    year: 2026,
+    description: "Data-driven social science research is inherently slow, relying on iterative cycles of observation, hypothesis generation, and experimental validation. While recent data-driven methods promise to accelerate parts of this process, they largely fail to support end-to-end scientific discovery. To address this gap, we introduce EXPERIGEN, an agentic framework that operationalizes end-to-end discovery through a Bayesian optimization inspired two-phase search, in which a Generator proposes candidate hypotheses and an Experimenter evaluates them empirically. Across multiple domains, EXPERIGEN consistently discovers 2-4x more statistically significant hypotheses that are 7-17 percent more predictive than prior approaches, and naturally extends to complex data regimes including multimodal and relational datasets. Beyond statistical performance, hypotheses must be novel, empirically grounded, and actionable to drive real scientific progress. To evaluate these qualities, we conduct an expert review of machine-generated hypotheses, collecting feedback from senior faculty. Among 25 reviewed hypotheses, 88 percent were rated moderately or strongly novel, 70 percent were deemed impactful and worth pursuing, and most demonstrated rigor comparable to senior graduate-level research. Finally, recognizing that ultimate validation requires real-world evidence, we conduct the first A/B test of LLM-generated hypotheses, observing statistically significant results with p less than 1e-6 and a large effect size of 344 percent.",
+    tags: ["Hypothesis Discovery", "Social Science"],
+    links: [
+      { label: "PDF", url: "https://arxiv.org/pdf/2602.07983", type: "pdf" },
+      { label: "Code", url: "#", type: "code" },
+      { label: "Project Page", url: "https://behavior-in-the-wild.github.io/experigen.html", type: "website" },
+    ]
+  }
   // {
   //   id: "p2",
   //   title: "Understanding Robustness in Vision Transformers",
