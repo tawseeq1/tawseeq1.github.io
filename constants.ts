@@ -39,7 +39,7 @@ export const PUBLICATIONS: Publication[] = [
     authors: ["JS Gupta*", "Harini SI*", "SK Singh*", "SM Tawseeq*", "YK Singla", "D Doermann", "RR Shah", "B Krishnamurthy"],
     venue: "",
     year: 2026,
-    description: "A framework for end-to-end hypothesis discovery that uses a generator–experimenter loop inspired by Bayesian optimization to propose and validate hypotheses, significantly outperforming prior methods. It produces more novel, impactful, and predictive hypotheses—validated by expert review and real-world A/B testing with strong statistical significance.",
+    description: "A framework for end-to-end hypothesis discovery that uses a generator–experimenter loop inspired by Bayesian optimization to propose and validate hypotheses, significantly outperforming prior methods.",
     tags: ["Hypothesis Discovery", "Social Science"],
     links: [
       { label: "PDF", url: "https://arxiv.org/pdf/2602.07983", type: "pdf" },
