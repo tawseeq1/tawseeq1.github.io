@@ -8,7 +8,7 @@ export const PROFILE: Profile = {
   bio: `I am a 4th-year undergraduate student at the Indian Institute of Technology, Kharagpur, pursuing my bachelor's degree in Chemical Engineering with a minor in Mathematics & Computing, specializing in Artificial Intelligence & Applications. Previously, I was a Research Intern at [Adobe MDSR Lab](https://adobe.mdsr.live/), where I worked with [Somesh](https://someshsingh22.github.io/), [Harini](https://harini-si.github.io/), and [Yaman](https://sites.google.com/view/yaman-kumar/). Currently, at IIT Kharagpur, I work under the guidance of Prof. [Somak Aditya](https://adityasomak.github.io/) and Prof. [Debaditya Roy](https://sites.google.com/view/debadityaroy/home?authuser=0).
 
 My primary interests lie in LLM Reasoning and Multimodal Learning. I also explore topics such as automated scientific discovery and neurosymbolic AI. These experiences have made me more curious about how models can integrate logic with statistical learning to achieve verifiable intelligence. As a dedicated student passionate about artificial intelligence, I am eager to embark on a research career focused on advancing reasoning and explainability in AI systems and ensuring their responsible development.`,
-  avatarUrl: "be_id_cropped.JPG", // Placeholder
+  avatarUrl: "be_id_cropped.jpg", // Placeholder
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
