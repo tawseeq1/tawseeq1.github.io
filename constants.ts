@@ -6,7 +6,7 @@ export const PROFILE: Profile = {
   affiliation: "Indian Institute of Technology Kharagpur",
   email: "theguysta56@gmail.com",
   bio: "I am a 4th-year undergraduate student at the Indian Institute of Technology, Kharagpur, pursuing my bachelor's degree in Chemical Engineering with a minor in Mathematics & Computing, specializing in Artificial Intelligence & Applications. Previously, I was a Research Intern at Adobe MDSR Lab. My primary interests lie in LLM Reasoning and Multimodal Learning. I also explore topics such as automated scientific discovery and neurosymbolic AI. These experiences have made me more curious about how models can integrate logic with statistical learning to achieve verifiable intelligence. As a dedicated student passionate about artificial intelligence, I am eager to embark on a research career focused on advancing reasoning and explainability in AI systems and ensuring their responsible development.",
-  avatarUrl: "be_tajpur.jpg", // Placeholder
+  avatarUrl: "be_id_cropped.JPG", // Placeholder
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
