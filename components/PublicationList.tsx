@@ -4,9 +4,9 @@ import { Icons } from './Icons';
 import { Link } from '../types';
 
 const PublicationList: React.FC = () => {
-  
+
   const getLinkIcon = (type: Link['type']) => {
-    switch(type) {
+    switch (type) {
       case 'pdf': return <Icons.FileText size={14} className="mr-1" />;
       case 'code': return <Icons.Code size={14} className="mr-1" />;
       case 'website': return <Icons.Globe size={14} className="mr-1" />;
@@ -15,7 +15,7 @@ const PublicationList: React.FC = () => {
   };
 
   const getLinkStyle = (type: Link['type']) => {
-    switch(type) {
+    switch (type) {
       case 'pdf': return "text-red-700 hover:bg-red-50 border-red-200";
       case 'code': return "text-slate-700 hover:bg-slate-50 border-slate-200";
       default: return "text-blue-700 hover:bg-blue-50 border-blue-200";
@@ -24,7 +24,7 @@ const PublicationList: React.FC = () => {
 
   // Split name to allow partial matching if needed, but simple includes is usually enough
   const isMe = (authorName: string) => {
-    return authorName === PROFILE.name;
+    return authorName === PROFILE.name || authorName === 'SM Tawseeq' || authorName.includes('Tawseeq') || authorName.includes('tawseeq');
   };
 
   return (
@@ -37,7 +37,7 @@ const PublicationList: React.FC = () => {
             <h3 className="text-lg font-semibold text-academic-900 mb-2 leading-tight">
               {pub.title}
             </h3>
-            
+
             {/* Authors */}
             <div className="text-academic-700 mb-2 text-base">
               {pub.authors.map((author, idx) => (
