@@ -28,18 +28,32 @@ export const INTERESTS: ResearchInterest[] = [
 ];
 
 export const NEWS: NewsItem[] = [
-  { date: "June 2026", content: "Graduated from IIT Khatagpur" },
+  { date: "June 10 2026", content: "[Do VLMs Reason Like Engineers?](https://arxiv.org/abs/2606.10833) is available on arXiv." },
   { date: "May 2026", content: "Graduated from IIT Khatagpur" },
-  { date: "Feb 2026", content: "[Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation](https://arxiv.org/abs/2606.10833) is available on arXiv." },
+  { date: "Feb 2026", content: "[ExperiGen](https://arxiv.org/abs/2602.07983) is available on arXiv." },
   { date: "May 2025", content: "Started my research internship at Adobe MDSR Lab." },
 ];
 
 export const PUBLICATIONS: Publication[] = [
   {
+    id: "p2",
+    title: "Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation",
+    authors: ["Syed Wasiq*", "Syed Mohamad Tawseeq*", "Yashwant Pravinrao Bangde", "Debaditya Roy"],
+    venue: "Under Review",
+    year: 2026,
+    description: "We introduce EngVQA, a benchmark of 696 engineering problems across five subjects, along with an 8-stage process-based evaluation framework that assesses intermediate reasoning steps rather than only final answers.",
+    tags: ["Visual Question Answering", "Multimodal Benchmarks", "Engineering Reasoning", "Stage-wise Evaluation", "LLM-as-a-Judge"],
+    links: [
+      { label: "PDF", url: "https://arxiv.org/pdf/2606.10833", type: "pdf" },
+      { label: "Code", url: "", type: "code" },
+      { label: "Project Page", url: "", type: "website" },
+    ]
+  }
+  {
     id: "p1",
     title: "Accelerating Social Science Research via Agentic Hypothesization and Experimentation",
     authors: ["JS Gupta*", "Harini SI*", "SK Singh*", "SM Tawseeq*", "YK Singla", "D Doermann", "RR Shah", "B Krishnamurthy"],
-    venue: "",
+    venue: "Under Review",
     year: 2026,
     description: "A framework for end-to-end hypothesis discovery that uses a generator–experimenter loop inspired by Bayesian optimization to propose and validate hypotheses, significantly outperforming prior methods.",
     tags: ["Hypothesis Discovery", "Social Science"],
