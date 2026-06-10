@@ -21,7 +21,7 @@ const NewsSection: React.FC = () => {
   return (
     <section id="news" className="mb-16 scroll-mt-24">
       <h2 className="text-2xl font-bold text-academic-900 mb-6 border-b border-academic-100 pb-2">News</h2>
-      <div className="space-y-4">
+      <div className="space-y-2">
         {NEWS.map((item, idx) => (
           <div key={idx} className="flex flex-col sm:flex-row sm:gap-6 text-sm sm:text-base">
             <div className="w-24 shrink-0 font-medium text-academic-500 pt-0.5">{item.date}</div>
