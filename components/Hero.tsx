@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
             {PROFILE.title} at {PROFILE.affiliation}
           </h2>
 
-          <div className="text-academic-700 leading-relaxed mb-6 text-base sm:text-lg">
+          <div className="text-academic-700 leading-relaxed text-base sm:text-lg">
             <ReactMarkdown
               components={{
                 a: ({node, ...props}) => <a {...props} className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer" />
@@ -37,34 +37,6 @@ const Hero: React.FC = () => {
             >
               {PROFILE.bio}
             </ReactMarkdown>
-          </div>
-
-          <div className="mb-8">
-            <h3 className="text-xs uppercase tracking-wider font-bold text-academic-400 mb-3">Research Interests</h3>
-            <div className="flex flex-wrap gap-2">
-              {INTERESTS.map((interest, idx) => (
-                <span key={idx} className="px-3 py-1 bg-academic-50 text-academic-700 rounded-full text-sm border border-academic-200">
-                  {interest.topic}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Social Links Row */}
-          <div className="flex flex-wrap gap-4">
-            {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.platform}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-academic-500 hover:text-blue-600 transition-colors flex items-center gap-2 text-sm font-medium"
-                aria-label={link.platform}
-              >
-                {getIcon(link.platform)}
-                <span className="capitalize">{link.username || link.platform}</span>
-              </a>
-            ))}
           </div>
         </div>
 
@@ -76,6 +48,35 @@ const Hero: React.FC = () => {
             className="w-full h-full object-cover rounded-full shadow-md border-2 border-white ring-1 ring-academic-100"
           />
         </div>
+      </div>
+
+      {/* Full-width below the bio + photo row */}
+      <div className="mt-8 mb-8">
+        <h3 className="text-xs uppercase tracking-wider font-bold text-academic-400 mb-3">Research Interests</h3>
+        <div className="flex flex-wrap gap-2">
+          {INTERESTS.map((interest, idx) => (
+            <span key={idx} className="px-3 py-1 bg-academic-50 text-academic-700 rounded-full text-sm border border-academic-200">
+              {interest.topic}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Social Links Row */}
+      <div className="flex flex-wrap gap-4">
+        {SOCIAL_LINKS.map((link) => (
+          <a
+            key={link.platform}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-academic-500 hover:text-blue-600 transition-colors flex items-center gap-2 text-sm font-medium"
+            aria-label={link.platform}
+          >
+            {getIcon(link.platform)}
+            <span className="capitalize">{link.username || link.platform}</span>
+          </a>
+        ))}
       </div>
     </section>
   );

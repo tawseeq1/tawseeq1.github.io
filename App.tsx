@@ -12,7 +12,7 @@ function App() {
       <Navigation />
 
       {/* Main Container */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6">
         
         {/* Intro / Bio */}
         <Hero />

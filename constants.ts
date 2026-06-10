@@ -24,7 +24,7 @@ export const INTERESTS: ResearchInterest[] = [
   { topic: "Reasoning in Large Language Models" },
   { topic: "Neuro-Symbolic AI" },
   { topic: "Multimodal Learning" },
-  { topic: "Geometric Representation Learning" }
+  { topic: "Representation Learning" }
 ];
 
 export const NEWS: NewsItem[] = [
