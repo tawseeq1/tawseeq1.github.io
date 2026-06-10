@@ -29,7 +29,7 @@ export const INTERESTS: ResearchInterest[] = [
 
 export const NEWS: NewsItem[] = [
   { date: "June 10 2026", content: "[Do VLMs Reason Like Engineers?](https://arxiv.org/abs/2606.10833) is available on arXiv." },
-  { date: "May 2026", content: "Graduated from IIT Khatagpur" },
+  { date: "May 2026", content: "Graduated from IIT Kharagpur" },
   { date: "Feb 2026", content: "[ExperiGen](https://arxiv.org/abs/2602.07983) is available on arXiv." },
   { date: "May 2025", content: "Started my research internship at Adobe MDSR Lab." },
 ];
