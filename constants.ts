@@ -48,7 +48,7 @@ export const PUBLICATIONS: Publication[] = [
       { label: "Code", url: "", type: "code" },
       { label: "Project Page", url: "", type: "website" },
     ]
-  }
+  },
   {
     id: "p1",
     title: "Accelerating Social Science Research via Agentic Hypothesization and Experimentation",
