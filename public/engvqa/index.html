@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+        content="EngVQA & EngJudge: A multimodal benchmark and stage-wise evaluation framework for assessing engineering reasoning in Vision-Language Models.">
+    <meta name="keywords"
+        content="Vision-Language Models, Engineering Reasoning, Multimodal Benchmark, Stage-wise Evaluation, LLM-as-a-Judge, EngVQA, EngJudge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation</title>
+
+    <meta property="og:title" content="Do VLMs Reason Like Engineers? EngVQA + EngJudge" />
+    <meta property="og:description"
+        content="A multimodal benchmark (EngVQA) and an 8-stage dependency-aware evaluation framework (EngJudge) for engineering reasoning in VLMs." />
+    <meta property="og:type" content="website" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2103/2103633.png">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --brand: #1f6feb;
+            --brand-dark: #0b3d91;
+            --ink: #1a202c;
+            --muted: #5a6572;
+            --soft: #f6f8fb;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--ink);
+            line-height: 1.65;
+        }
+
+        .title,
+        h1,
+        h2,
+        h3 {
+            font-family: 'Google Sans', 'Noto Sans', sans-serif;
+        }
+
+        .hero-head {
+            background: linear-gradient(135deg, #0b3d91 0%, #1f6feb 100%);
+            color: #fff;
+            padding: 3.2rem 1rem 2.6rem;
+            text-align: center;
+        }
+
+        .hero-head .paper-title {
+            color: #fff;
+            font-weight: 700;
+            font-size: 2.1rem;
+            line-height: 1.25;
+            max-width: 960px;
+            margin: 0 auto 1.1rem;
+        }
+
+        .venue-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 999px;
+            padding: 0.25rem 1rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.4rem;
+        }
+
+        .authors {
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .affil {
+            font-size: 0.92rem;
+            opacity: 0.9;
+        }
+
+        .link-buttons {
+            margin-top: 1.6rem;
+        }
+
+        .link-buttons a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: #12213a;
+            color: #fff;
+            border-radius: 999px;
+            padding: 0.5rem 1.15rem;
+            margin: 0.3rem;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .link-buttons a:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+
+        .section {
+            padding: 2.6rem 1.25rem;
+        }
+
+        .section-wrap {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        h2.sec-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--brand-dark);
+            border-bottom: 3px solid var(--brand);
+            display: inline-block;
+            padding-bottom: 0.25rem;
+            margin-bottom: 1.4rem;
+        }
+
+        h3.sub-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin: 1.6rem 0 0.7rem;
+        }
+
+        .alt-bg {
+            background: var(--soft);
+        }
+
+        .figure-box {
+            background: #fff;
+            border: 1px dashed #b9c4d4;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1.4rem 0;
+        }
+
+        .figure-box img {
+            max-width: 100%;
+            border-radius: 6px;
+        }
+
+        .figure-box .placeholder {
+            color: var(--muted);
+            font-size: 0.9rem;
+            padding: 2.4rem 1rem;
+            background: #f0f3f8;
+            border-radius: 6px;
+        }
+
+        .figure-box figcaption {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin-top: 0.7rem;
+            text-align: left;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .contrib-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.15rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .contrib-card .num {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--brand);
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.4rem 0;
+        }
+
+        .stat {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat .big {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--brand-dark);
+        }
+
+        .stat .lbl {
+            font-size: 0.82rem;
+            color: var(--muted);
+        }
+
+        table.data {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin: 1.1rem 0;
+            background: #fff;
+        }
+
+        table.data th,
+        table.data td {
+            border: 1px solid var(--border);
+            padding: 0.5rem 0.65rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table.data thead th {
+            background: var(--brand-dark);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        table.data tbody tr:nth-child(even) {
+            background: var(--soft);
+        }
+
+        table.data td.num,
+        table.data th.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .highlight {
+            background: #eaf2ff;
+            border-left: 4px solid var(--brand);
+            border-radius: 0 8px 8px 0;
+            padding: 0.8rem 1.1rem;
+            margin: 1.1rem 0;
+        }
+
+        .stage-list {
+            counter-reset: stage;
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+        }
+
+        .stage-list li {
+            position: relative;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 0.9rem 0.75rem 3rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .stage-list li::before {
+            counter-increment: stage;
+            content: counter(stage);
+            position: absolute;
+            left: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.7rem;
+            height: 1.7rem;
+            background: var(--brand);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .eq-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            margin: 0.9rem 0;
+            overflow-x: auto;
+        }
+
+        code.bibtex {
+            display: block;
+            white-space: pre;
+            background: #12213a;
+            color: #e6edf3;
+            padding: 1.1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+
+        footer.site-footer {
+            background: #12213a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.8rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        footer.site-footer a {
+            color: #93c5fd;
+        }
+
+        .pill {
+            display: inline-block;
+            background: #eaf2ff;
+            color: var(--brand-dark);
+            border-radius: 999px;
+            padding: 0.1rem 0.6rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin: 0.1rem;
+        }
+
+        .note {
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================ HERO ============================ -->
+    <header class="hero-head">
+        <div class="venue-badge">EMNLP Submission &nbsp;·&nbsp; Multimodal Engineering Reasoning</div>
+        <h1 class="paper-title">Do VLMs Reason Like Engineers?<br>A Benchmark and a Stage-wise Evaluation</h1>
+
+        <div class="authors">Anonymous Authors</div>
+        <div class="affil">EngVQA Benchmark &nbsp;·&nbsp; EngJudge Evaluation Framework</div>
+
+        <div class="link-buttons">
+            <!-- TODO: replace # with the real links when available -->
+            <a href="#"><i class="fas fa-file-pdf"></i> Paper</a>
+            <a href="#"><i class="ai ai-arxiv"></i><i class="fas fa-file-alt"></i> arXiv</a>
+            <a href="#"><i class="fab fa-github"></i> Code</a>
+            <a href="#"><i class="fas fa-database"></i> Dataset</a>
+        </div>
+        <p class="note" style="color:#cfe0ff;margin-top:1rem;">Code &amp; dataset to be released upon acceptance.</p>
+    </header>
+
+    <!-- ============================ TEASER ============================ -->
+    <section class="section">
+        <div class="section-wrap">
+            <figure class="figure-box">
+                <!-- MAIN DIAGRAM: replace src with the EngJudge framework overview (paper Figure 2) -->
+                <img src="./static/images/framework_overview.png" alt="EngJudge framework overview"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <div class="placeholder" style="display:none;">
+                    [ Main diagram placeholder — add <code>./static/images/framework_overview.png</code> (Figure 2:
+                    EngJudge overview) ]
+                </div>
+                <figcaption><b>Figure 1.</b> Overview of the EngJudge evaluation framework. (A) A VLM generates a
+                    structured step-wise solution for an engineering problem with text and a technical diagram. (B) The
+                    solution is decomposed into eight reasoning stages, each independently evaluated with rubric-guided
+                    LLM-as-a-judge prompts, penalty-based scoring, and fatal-error detection. (C) Stage scores are
+                    propagated through a dependency graph. (D) Meta-evaluation checks aggregate them into a single
+                    interpretable score on a 0–10 scale.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ============================ ABSTRACT ============================ -->
+    <section class="section alt-bg">
+        <div class="section-wrap">
+            <h2 class="sec-title">Abstract</h2>
+            <p>
+                Vision-Language Models (VLMs) demonstrate strong performance on general multimodal reasoning benchmarks,
+                yet their ability to perform <b>engineering reasoning</b> remains largely unexplored. Unlike general
+                visual question answering, engineering problem solving requires interpreting technical diagrams,
+                selecting governing physical principles, and maintaining physically consistent multi-step reasoning.
+                These capabilities are increasingly important for AI systems used in engineering education, scientific
+                assistance, and technical decision-making, where reasoning failures may produce physically invalid yet
+                superficially plausible solutions.
+            </p>
+            <p>
+                Existing benchmarks primarily evaluate final answers and provide limited assessment of intermediate
+                reasoning processes. We introduce <b>EngVQA</b>, a multimodal benchmark for evaluating engineering
+                reasoning across 5 engineering subjects containing <b>696 problems</b>. We introduce <b>EngJudge</b>, an
+                8-stage automatic evaluation framework for assessing VLM-generated solutions. The framework independently
+                evaluates each stage of the solution, enabling fine-grained analysis of reasoning failures. We benchmark
+                multiple state-of-the-art open and closed source VLMs and demonstrate substantial limitations in current
+                engineering reasoning capabilities. Human evaluation shows strong agreement with our automated framework,
+                achieving a <b>Pearson correlation of 0.975</b> and a <b>mean absolute error of 0.67</b> on a 10-point
+                grading scale. Our results highlight the importance of process-oriented evaluation for reliable
+                assessment of multimodal engineering reasoning systems.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================ CONTRIBUTIONS ============================ -->
+    <section class="section">
+        <div class="section-wrap">
+            <h2 class="sec-title">Contributions</h2>
+            <div class="card-grid">
+                <div class="contrib-card">
+                    <div class="num">01</div>
+                    <p><b>EngVQA benchmark.</b> A multimodal benchmark of 696 authentic engineering problems requiring
+                        reasoning over technical diagrams, physical principles, symbolic derivations, and multi-step
+                        quantitative analysis.</p>
+                </div>
+                <div class="contrib-card">
+                    <div class="num">02</div>
+                    <p><b>EngJudge framework.</b> An 8-stage process-oriented evaluation framework that models
+                        dependency-aware reasoning failures and achieves strong agreement with expert human evaluators.
+                    </p>
+                </div>
+                <div class="contrib-card">
+                    <div class="num">03</div>
+                    <p><b>Diagnostic findings.</b> SOTA VLMs show substantial weaknesses in engineering reasoning —
+                        particularly diagram interpretation, equation selection, assumption validation, and physically
+                        consistent multi-stage analysis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ COMPARISON TABLE ============================ -->
+    <section class="section alt-bg">
+        <div class="section-wrap">
+            <h2 class="sec-title">How EngVQA + EngJudge Differ</h2>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>Engineering<br>Reasoning</th>
+                            <th>Multimodal<br>Reasoning</th>
+                            <th>Technical<br>Diagrams</th>
+                            <th>Process<br>Evaluation</th>
+                            <th>Stage-wise<br>Evaluation</th>
+                            <th>Physics<br>Constraints</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>MMMU</td><td>Partial</td><td>Yes</td><td>Partial</td><td>No</td><td>No</td><td>No</td></tr>
+                        <tr><td>SciBench</td><td>No</td><td>Limited</td><td>No</td><td>No</td><td>No</td><td>No</td></tr>
+                        <tr><td>EngiBench</td><td>Yes</td><td>No</td><td>No</td><td>Partial</td><td>No</td><td>Yes</td></tr>
+                        <tr><td>EEE-Bench</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>Partial</td></tr>
+                        <tr><td>SeePhys</td><td>Partial</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+                        <tr style="background:#eaf2ff;font-weight:600;"><td>EngVQA + EngJudge</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 1. Comparison along engineering realism, technical diagram understanding,
+                process-level evaluation, and physics-aware reasoning constraints.</p>
+        </div>
+    </section>
+
+    <!-- ============================ ENGVQA BENCHMARK ============================ -->
+    <section class="section">
+        <div class="section-wrap">
+            <h2 class="sec-title">The EngVQA Benchmark</h2>
+
+            <div class="stat-row">
+                <div class="stat"><div class="big">696</div><div class="lbl">Total problems</div></div>
+                <div class="stat"><div class="big">5</div><div class="lbl">Engineering subjects</div></div>
+                <div class="stat"><div class="big">280+</div><div class="lbl">Distinct topics</div></div>
+                <div class="stat"><div class="big">Multimodal</div><div class="lbl">Diagram-grounded</div></div>
+            </div>
+
+            <h3 class="sub-title">Benchmark Design Principles</h3>
+            <ol>
+                <li><b>Diagram-Grounded Analytical Reasoning.</b> Problems require extracting geometry, boundary
+                    conditions, force directions, flow structure, material interfaces, and spatial constraints directly
+                    from technical figures — free-body diagrams, thermodynamic plots, flow schematics, stress
+                    distributions, and engineering layouts.</li>
+                <li><b>Structured Multi-Stage Reasoning.</b> Solutions involve multiple interdependent stages: problem
+                    characterization, assumption formulation, visual interpretation, equation selection, symbolic
+                    derivation, algebraic computation, and physical validation.</li>
+                <li><b>Physics-Constrained Engineering Workflows.</b> Problems require physically valid reasoning under
+                    domain-specific engineering constraints, maintaining consistency between visual interpretation,
+                    governing equations, simplifying assumptions, and final quantitative predictions.</li>
+            </ol>
+
+            <h3 class="sub-title">Subject-wise Statistics</h3>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th class="num">#Qs</th>
+                            <th class="num">ATPQ</th>
+                            <th>Representative Topics (Total)</th>
+                            <th>Diagram Types</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Dynamics</td><td class="num">171</td><td class="num">3.57</td><td>Rigid-body motion, impact, vibration (54)</td><td>FBDs, kinematic schematics</td></tr>
+                        <tr><td>Thermodynamics</td><td class="num">236</td><td class="num">9.28</td><td>Cycles, entropy, steady-flow systems (53)</td><td>Property plots, thermodynamic systems</td></tr>
+                        <tr><td>Fluid Mechanics</td><td class="num">93</td><td class="num">5.81</td><td>Pipe flow, hydrostatics, drag/lift (59)</td><td>Flow schematics, pressure diagrams</td></tr>
+                        <tr><td>Heat &amp; Mass Transfer</td><td class="num">96</td><td class="num">13.89</td><td>Conduction, convection, diffusion (60)</td><td>Thermal circuits, boundary-layer diagrams</td></tr>
+                        <tr><td>Mechanics of Materials</td><td class="num">100</td><td class="num">9.46</td><td>Stress analysis, torsion, buckling (60)</td><td>Beam loading, stress distributions</td></tr>
+                        <tr style="font-weight:600;"><td>Total</td><td class="num">696</td><td class="num">—</td><td colspan="2">Multimodal engineering reasoning problems</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 2. ATPQ = Average Topics per Question — a measure of reasoning density. Heat &amp; Mass
+                Transfer exhibits the highest conceptual coupling (13.89 topics/Q).</p>
+
+            <div class="highlight">
+                Across all subjects, technical diagrams play a central role in downstream analytical formulation, making
+                visual interpretation a <b>necessary</b> component of successful problem solving rather than auxiliary
+                context.
+            </div>
+
+            <h3 class="sub-title">Topic Coverage</h3>
+            <p>A master vocabulary of 50–60 generalized topics per subject was synthesized to match standard course
+                syllabi, then mapped to each problem via a multimodal classification pipeline with fuzzy-match
+                validation.</p>
+            <p>
+                <span class="pill">Dynamics: Kinematics · Kinetics · Rigid-Body Dynamics</span>
+                <span class="pill">Thermodynamics: First/Second Law · Entropy &amp; Exergy · Cycles</span>
+                <span class="pill">Fluid Mechanics: Statics · Conservation Laws · Internal/External &amp; Compressible Flows</span>
+                <span class="pill">Heat &amp; Mass Transfer: Conduction · Convection · Radiation · Mass Transfer</span>
+                <span class="pill">Mechanics of Materials: Stress &amp; Deformation · Structural Analysis · Advanced Behavior</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================ ENGJUDGE FRAMEWORK ============================ -->
+    <section class="section alt-bg">
+        <div class="section-wrap">
+            <h2 class="sec-title">The EngJudge Framework</h2>
+            <p>
+                Evaluating engineering reasoning requires more than final-answer correctness, because failures often
+                emerge within intermediate stages such as assumption formulation, diagram interpretation, equation
+                selection, and computation. EngJudge is a multi-stage, penalty-based automatic framework that decomposes
+                each solution into <b>eight structured reasoning stages</b> and evaluates them individually through an
+                LLM-as-a-judge. It combines penalty-based stage scoring, graph-based dependency propagation,
+                meta-evaluation checks, and exam-style partial credit into a single interpretable score on a 0–10 scale.
+            </p>
+
+            <h3 class="sub-title">The Eight Reasoning Stages</h3>
+            <p>Solutions are generated in a fixed tagged format so they can be parsed automatically:</p>
+            <div class="eq-box"><code>###### STAGE_NAME ######
+[stage content]
+###### END_STAGE ######</code></div>
+            <ol class="stage-list">
+                <li><b>Problem Characterization</b> — identifies physics domain, problem type, and governing principles.</li>
+                <li><b>Assumptions</b> — makes valid, justified assumptions based on problem information.</li>
+                <li><b>Visual Interpretation</b> — reads diagrams, FBDs, geometry, and visual boundary conditions.</li>
+                <li><b>Equation Selection</b> — selects correct governing equations, BCs, and coordinate systems.</li>
+                <li><b>Logical Reasoning</b> — ensures logical validity and physical causality of each step.</li>
+                <li><b>Algebraic Accuracy</b> — evaluates derivations, substitutions, and algebraic manipulations.</li>
+                <li><b>Physical Interpretation</b> — interprets the physical meaning of the computed result.</li>
+                <li><b>Final Answer</b> — compares predicted values with ground truth using numerical error thresholds.</li>
+            </ol>
+
+            <h3 class="sub-title">Penalty-Based Stage Scoring</h3>
+            <p>Every stage begins with a score of 10; penalties are deducted for detected errors. The raw stage score is
+            </p>
+            <div class="eq-box">$$Y_t = \max\!\left(0,\; 10 - \sum_i p_i\right)$$</div>
+            <p>where $p_i$ is the penalty of the $i$-th identified error in stage $t$, drawn from a four-level severity
+                scale:</p>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead><tr><th>Severity</th><th class="num">Penalty</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td>Minor</td><td class="num">2</td><td>Small rounding differences</td></tr>
+                        <tr><td>Moderate</td><td class="num">4</td><td>Unit conversion errors</td></tr>
+                        <tr><td>Major</td><td class="num">7</td><td>Wrong boundary conditions</td></tr>
+                        <tr><td>Critical</td><td class="num">10</td><td>Dimensional inconsistency</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 3. The four-level penalty severity scale (2, 4, 7, 10), applied uniformly across all
+                stages. 55.6% of expert evaluators rated this scheme "well calibrated."</p>
+
+            <h3 class="sub-title">Fatal Error Capping</h3>
+            <p>Certain critical mistakes cap the maximum stage score regardless of accumulated penalties. The final stage
+                score is the minimum of the additive score and the applicable cap.</p>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead><tr><th>Fatal Error Type</th><th class="num">Score Cap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Governing equation incorrect</td><td class="num">3</td></tr>
+                        <tr><td>Physical model invalid</td><td class="num">4</td></tr>
+                        <tr><td>Dimensionally inconsistent</td><td class="num">2</td></tr>
+                        <tr><td>Boundary conditions invalid</td><td class="num">4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 7. Fatal error caps. When multiple fatal errors trigger in a stage, the score is capped
+                at the lowest applicable value.</p>
+
+            <h3 class="sub-title">Graph-Based Dependency Propagation</h3>
+            <p>Upstream reasoning failures propagate through a dependency DAG that follows the natural flow of an
+                engineering solution. For stage 1 (no parents), $S_1 = Y_1$. Otherwise:</p>
+            <div class="eq-box">$$S_t = Y_t \times \frac{1}{N_t}\sum_{p \in P(t)} \frac{S_p}{10}$$</div>
+            <p>where $P(t)$ is the set of parent stages, $N_t = |P(t)|$, and $S_p$ is the propagated score of parent $p$.
+                A correct downstream step built on a flawed upstream step should not receive full credit.</p>
+
+            <figure class="figure-box">
+                <!-- Replace with the DAG figure (paper Figure 9) -->
+                <img src="./static/images/dependency_dag.png" alt="Dependency DAG"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <div class="placeholder" style="display:none;">
+                    [ Placeholder — add <code>./static/images/dependency_dag.png</code> (Figure 9: dependency DAG) ]
+                </div>
+                <figcaption><b>Figure 2.</b> Dependency DAG used for trust propagation. Problem Characterization and
+                    Assumptions affect all later steps; Visual Interpretation feeds Equation Selection; Equation
+                    Selection and Logical Reasoning influence Algebraic Accuracy; Physical Interpretation runs alongside
+                    computation and contributes to the Final Answer.</figcaption>
+            </figure>
+
+            <h3 class="sub-title">Score Aggregation &amp; Meta-Evaluation Gates</h3>
+            <p>The base score averages the dependency-aware stage scores; missing stages incur a flat penalty; three
+                whole-solution checks apply as multiplicative discounts.</p>
+            <div class="eq-box">$$S_\text{base} = \frac{1}{N}\sum_{t=1}^{N} S_t \qquad S_\text{blend} = \max(0,\; S_\text{base} - \text{MP})$$</div>
+            <div class="eq-box">$$S_\text{final} = S_\text{blend}\cdot(1-\text{COVERAGE})\cdot(1-\text{VERBOSITY})\cdot 0.9^{\text{SANITY\_FAIL}}$$</div>
+            <div class="card-grid">
+                <div class="contrib-card"><b>Coverage.</b> Checks whether all requested quantities, sub-parts, and
+                    reasoning steps are addressed. Penalty capped at 0.5.</div>
+                <div class="contrib-card"><b>Verbosity.</b> Penalizes excessive repetition, filler reasoning, and
+                    unnecessarily long solutions. Penalty capped at 0.5.</div>
+                <div class="contrib-card"><b>Physical Sanity.</b> Binary check for physically impossible or internally
+                    inconsistent outputs; a failure applies a flat 10% (×0.9) penalty.</div>
+            </div>
+            <p class="note">MP = 2.0 × (number of absent required stages). Coverage and Verbosity are each mapped from a
+                0–10 evaluator score via $\min(0.5,\,(10-\text{score})\times 0.10)$.</p>
+        </div>
+    </section>
+
+    <!-- ============================ RESULTS ============================ -->
+    <section class="section">
+        <div class="section-wrap">
+            <h2 class="sec-title">Results</h2>
+
+            <div class="highlight">
+                No generator model breaches a mean score of <b>4</b> in any subject under EngJudge — highlighting the
+                extreme difficulty of engineering questions for current SOTA VLMs.
+            </div>
+
+            <h3 class="sub-title">Leniency Bias in One-Shot Judging</h3>
+            <p>Under a single-pass judge, Gemini-2.5-Flash receives an optimistic overall score of <b>8.001</b>. Under
+                the structured, dependency-aware grading of EngJudge, it drops to <b>2.869</b>. Standard one-shot LLMs
+                suffer from a leniency bias, overlooking mathematical errors, missing justifications, or misinterpreting
+                visuals when the final text appears superficially plausible.</p>
+
+            <figure class="figure-box">
+                <!-- Replace with cross-evaluator radar / stage-wise plot (paper Figure 3 / 4) -->
+                <img src="./static/images/results_stagewise.png" alt="Stage-wise results"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <div class="placeholder" style="display:none;">
+                    [ Placeholder — add <code>./static/images/results_stagewise.png</code> (Figure 3/4: cross-evaluator
+                    &amp; stage-wise scores) ]
+                </div>
+                <figcaption><b>Figure 3.</b> Setup stages remain high (above 5.4 even under EngJudge), but performance
+                    collapses at the execution stages — Logical Reasoning, Algebraic Accuracy, Physical Interpretation,
+                    and Final Answer. Algebraic Accuracy is the primary bottleneck, bottoming out at <b>2.74</b>.</figcaption>
+            </figure>
+
+            <h3 class="sub-title">Cross-Evaluator Performance (0–10 scale)</h3>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead>
+                        <tr><th>Generator</th><th>Evaluator (setting)</th><th class="num">FM</th><th class="num">HMT</th><th class="num">MoM</th><th class="num">Thermo</th><th class="num">Dyn</th><th class="num">Overall</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td rowspan="6">Qwen3-VL-8B<br>(CoT)</td><td>Qwen3-VL-32B (Baseline)</td><td class="num">7.07</td><td class="num">7.25</td><td class="num">7.04</td><td class="num">8.00</td><td class="num">7.31</td><td class="num">7.45</td></tr>
+                        <tr><td>Gemini-3.1 Pro (Baseline)</td><td class="num">4.61</td><td class="num">5.25</td><td class="num">4.63</td><td class="num">7.22</td><td class="num">5.50</td><td class="num">5.75</td></tr>
+                        <tr><td>Qwen3-VL-32B (Baseline+Dep)</td><td class="num">6.19</td><td class="num">6.39</td><td class="num">6.45</td><td class="num">7.45</td><td class="num">6.75</td><td class="num">6.79</td></tr>
+                        <tr><td>Gemini-3.1 Pro (Baseline+Dep)</td><td class="num">4.03</td><td class="num">4.60</td><td class="num">3.99</td><td class="num">6.80</td><td class="num">4.92</td><td class="num">5.20</td></tr>
+                        <tr style="background:#eaf2ff;"><td>Qwen3-VL-32B (EngJudge)</td><td class="num">0.20</td><td class="num">0.22</td><td class="num">0.24</td><td class="num">0.62</td><td class="num">0.50</td><td class="num">0.42</td></tr>
+                        <tr style="background:#eaf2ff;"><td>Gemini-3.1 Pro (EngJudge)</td><td class="num">0.66</td><td class="num">0.85</td><td class="num">1.00</td><td class="num">2.80</td><td class="num">1.70</td><td class="num">1.67</td></tr>
+                        <tr><td rowspan="6">Gemini-2.5-Flash<br>(CoT)</td><td>Qwen3-VL-32B (Baseline)</td><td class="num">9.09</td><td class="num">9.09</td><td class="num">8.83</td><td class="num">9.14</td><td class="num">8.25</td><td class="num">8.86</td></tr>
+                        <tr><td>Gemini-3.1 Pro (Baseline)</td><td class="num">7.40</td><td class="num">7.70</td><td class="num">7.22</td><td class="num">9.13</td><td class="num">7.56</td><td class="num">8.00</td></tr>
+                        <tr><td>Qwen3-VL-32B (Baseline+Dep)</td><td class="num">8.85</td><td class="num">8.77</td><td class="num">8.67</td><td class="num">8.97</td><td class="num">8.06</td><td class="num">8.65</td></tr>
+                        <tr><td>Gemini-3.1 Pro (Baseline+Dep)</td><td class="num">7.00</td><td class="num">7.18</td><td class="num">6.81</td><td class="num">8.88</td><td class="num">7.17</td><td class="num">7.63</td></tr>
+                        <tr style="background:#eaf2ff;"><td>Qwen3-VL-32B (EngJudge)</td><td class="num">0.67</td><td class="num">0.66</td><td class="num">1.04</td><td class="num">1.03</td><td class="num">1.10</td><td class="num">0.95</td></tr>
+                        <tr style="background:#eaf2ff;"><td>Gemini-3.1 Pro (EngJudge)</td><td class="num">2.34</td><td class="num">2.01</td><td class="num">3.25</td><td class="num">3.33</td><td class="num">2.85</td><td class="num">2.87</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 8. Highlighted rows are the proposed EngJudge framework. FM = Fluid Mechanics, HMT =
+                Heat &amp; Mass Transfer, MoM = Mechanics of Materials, Thermo = Thermodynamics, Dyn = Dynamics.</p>
+
+            <h3 class="sub-title">Component Ablation</h3>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead><tr><th>Variant</th><th class="num">Qwen3-VL-8B</th><th class="num">Gemini 2.5 Flash</th></tr></thead>
+                    <tbody>
+                        <tr><td>EngJudge (Full Framework)</td><td class="num">1.67</td><td class="num">2.87</td></tr>
+                        <tr><td>EngJudge w/o Dependency Propagation</td><td class="num">2.48</td><td class="num">4.12</td></tr>
+                        <tr><td>EngJudge w/o Meta-Eval Checks</td><td class="num">2.35</td><td class="num">4.75</td></tr>
+                        <tr><td>EngJudge w/o Missing-Stage Penalty</td><td class="num">2.01</td><td class="num">2.96</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 4. Dependency-aware propagation is the primary source of grading rigor; meta-checks
+                further tighten scores. Evaluated with Gemini 3.1 Pro Preview.</p>
+
+            <h3 class="sub-title">Dependency Topology Ablation</h3>
+            <div class="table-scroll">
+                <table class="data">
+                    <thead><tr><th>Topology Type</th><th class="num">Qwen3-VL-8B</th><th class="num">Gemini 2.5 Flash</th></tr></thead>
+                    <tbody>
+                        <tr style="background:#eaf2ff;"><td>True DAG (ours)</td><td class="num">3.48</td><td class="num">5.03</td></tr>
+                        <tr><td>Strict Linear Chain</td><td class="num">2.93</td><td class="num">4.29</td></tr>
+                        <tr><td>Independent (Flat)</td><td class="num">5.18</td><td class="num">7.19</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="note">Table 10. The True DAG models parallel reasoning pathways accurately — penalizing dependent
+                steps only when their specific prerequisites fail — avoiding both the over-leniency of a flat structure
+                and the over-severity of a strict linear chain. (Base scores, before meta-checks.)</p>
+
+            <div class="highlight">
+                <b>Error propagation is real.</b> Raw stage scores show strong, <i>localized</i> correlations — Algebraic
+                Accuracy ↔ Final Answer ($r=0.69$) and Equation Selection ↔ Logical Reasoning ($r=0.53$) — while distant
+                conceptual stages are nearly uncorrelated (Problem Characterization ↔ Final Answer, $r=0.06$),
+                empirically validating the dependency-graph design.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ HUMAN STUDY ============================ -->
+    <section class="section alt-bg">
+        <div class="section-wrap">
+            <h2 class="sec-title">Human Validation Study</h2>
+            <p>A blinded study with <b>9 expert evaluators</b> (PhD students with TA and grading experience in the chosen
+                subjects) assessed alignment between EngJudge's structured scoring and human judgment. Problems were
+                sampled randomly per evaluator to validate the framework across the widest possible range of domains,
+                reasoning patterns, diagram types, and error modes.</p>
+
+            <div class="stat-row">
+                <div class="stat"><div class="big">0.975</div><div class="lbl">Pearson correlation</div></div>
+                <div class="stat"><div class="big">0.67</div><div class="lbl">Mean absolute error</div></div>
+                <div class="stat"><div class="big">393</div><div class="lbl">Rated evaluation units</div></div>
+                <div class="stat"><div class="big">66.7%</div><div class="lbl">Prefer dependency scoring</div></div>
+            </div>
+
+            <p>Across 393 rated units (285 stage-level + 108 meta-evaluation), EngJudge aligns strongly with expert
+                judgment. In a blind A/B comparison, evaluators favored the dependency-aware score over a naive average
+                in <b>66.7%</b> of cases — confirming that engineering evaluation requires hierarchical, cascading
+                penalization rather than isolated stage-wise grading. For 48.9% of all points, evaluators selected "About
+                right," indicating exact agreement with no adjustment.</p>
+
+            <figure class="figure-box">
+                <!-- Replace with the alignment scatter (paper Figure 11) -->
+                <img src="./static/images/human_alignment.png" alt="Human alignment"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <div class="placeholder" style="display:none;">
+                    [ Placeholder — add <code>./static/images/human_alignment.png</code> (Figure 11: framework vs.
+                    human-score alignment) ]
+                </div>
+                <figcaption><b>Figure 4.</b> Alignment between human scores and automated framework scores (N = 393).
+                    Points cluster tightly around the y = x diagonal. Per-category: Step-Level r = 0.967 (MAE 0.71);
+                    Meta-Eval r = 0.986 (MAE 0.56); Overall r = 0.975 (MAE 0.67).</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ============================ ADDITIONAL EXPERIMENTS ============================ -->
+    <section class="section">
+        <div class="section-wrap">
+            <h2 class="sec-title">Additional Experiments &amp; Robustness</h2>
+
+            <h3 class="sub-title">Generalization Across Model Families</h3>
+            <p>Beyond Gemini-2.5-Flash and Qwen3-VL-8B, we evaluated <b>InternVL3.5-38B</b> — a larger, different-family
+                open-weight model. Its scores closely follow those of the two original models, and the same stage-wise
+                failure profile is preserved: high scores on setup and problem-characterization stages, collapsing at the
+                downstream execution stages. This indicates the observed limitations are <b>systematic rather than
+                artifacts of model choice</b>.</p>
+
+            <h3 class="sub-title">Robustness of the Agreement</h3>
+            <p>Beyond Pearson $r = 0.975$ and MAE $= 0.67$, the framework achieves a quadratically-weighted Cohen's
+                $\kappa = 0.97$ and a Spearman $\rho = 0.94$ — consistent across linear correlation, rank correlation,
+                and chance-corrected weighted agreement, so the agreement is not an artifact of any single metric.</p>
+
+            <h3 class="sub-title">Generalizability of the Error Taxonomy</h3>
+            <p>Replicating the pilot error analysis with a different pipeline (Qwen3-VL-8B solver + Qwen3-VL-32B judge)
+                reproduces the same dominant failure modes — Equation Selection, Algebraic Accuracy, and Physical
+                Interpretation remain the most frequent error stages (Spearman $\rho = 0.71$). The main model-specific
+                difference is that the smaller Qwen3-VL-8B makes more Visual Interpretation errors (36% vs. 13%),
+                consistent with weaker visual grounding; excluding this expected difference raises agreement to $\rho =
+                0.89$. The taxonomy captures stable, generalizable reasoning-failure patterns.</p>
+
+            <h3 class="sub-title">No Self-Preference Bias</h3>
+            <p>Cross-evaluation guards against judge bias: if self-preference were driving results, the Gemini judge
+                would favor the Gemini-family generator. Instead its scores are relatively higher for the Qwen generator
+                (~4.0× the Qwen judge) than for Gemini-2.5-Flash (~3.0×), and both judges preserve the same subject
+                ranking.</p>
+        </div>
+    </section>
+
+    <!-- ============================ FAILURE CASES ============================ -->
+    <section class="section alt-bg">
+        <div class="section-wrap">
+            <h2 class="sec-title">Representative Failure Modes</h2>
+            <div class="card-grid">
+                <div class="contrib-card">
+                    <b>Visual Interpretation</b>
+                    <p class="note" style="margin-top:0.4rem;">Thermodynamics (Prob. 5-131): failed to identify physical
+                        stops in a piston-cylinder schematic, modeling the entire compression as isobaric.</p>
+                </div>
+                <div class="contrib-card">
+                    <b>Boundary Conditions</b>
+                    <p class="note" style="margin-top:0.4rem;">Fluid Mechanics (Prob. 11): applied Bernoulli's equation
+                        to compute a non-zero exit pressure for an unconfined jet discharging to atmosphere (should be
+                        zero gauge pressure).</p>
+                </div>
+                <div class="contrib-card">
+                    <b>Dimensionless Groups</b>
+                    <p class="note" style="margin-top:0.4rem;">Heat &amp; Mass Transfer (Prob. 71): evaluated air
+                        properties at free-stream instead of film temperature, corrupting Re and Pr numbers.</p>
+                </div>
+                <div class="contrib-card">
+                    <b>Arithmetic &amp; Units</b>
+                    <p class="note" style="margin-top:0.4rem;">Dynamics (Prob. 21-77): equated spin rate to total
+                        angular velocity, ignoring precession — underestimating angular momentum by ~45%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ COMPUTE ============================ -->
+    <section class="section">
+        <div class="section-wrap">
+            <h2 class="sec-title">Computational Cost</h2>
+            <p>EngJudge uses <b>11 LLM judge calls per solution</b> (8 stage-specific + 3 meta-evaluation). The primary
+                Gemini API run required ~10.8 hours, consuming 36.46M input and 1.77M output tokens (avg. ~58 s and ~55K
+                input tokens per question). The local Qwen pipeline used 11 GPU-hours (6 H100 + 5 L40). The Gemini judge
+                ran at temperature 0.2 with reasoning budgets disabled; Qwen models at temperature 0.7.</p>
+        </div>
+    </section>
+
+    <!-- ============================ BIBTEX ============================ -->
+    <section class="section alt-bg">
+        <div class="section-wrap">
+            <h2 class="sec-title">BibTeX</h2>
+            <code class="bibtex">@inproceedings{engvqa_engjudge,
+  title     = {Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation},
+  author    = {Anonymous},
+  booktitle = {Proceedings of EMNLP},
+  year      = {2025},
+  note      = {EngVQA benchmark and EngJudge evaluation framework}
+}</code>
+            <p class="note">Citation to be updated upon acceptance.</p>
+        </div>
+    </section>
+
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="site-footer">
+        <p>EngVQA &amp; EngJudge — a benchmark and stage-wise evaluation framework for multimodal engineering reasoning.</p>
+        <p style="margin-top:0.5rem;">Page template adapted from the
+            <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> academic project page. Content licensed
+            under <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+    </footer>
+
+</body>
+
+</html>
