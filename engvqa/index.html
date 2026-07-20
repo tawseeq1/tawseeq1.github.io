@@ -15,101 +15,109 @@
         content="A multimodal benchmark (EngVQA) and an 8-stage dependency-aware evaluation framework (EngJudge) for engineering reasoning in VLMs." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2103/2103633.png">
 
     <style>
         :root {
-            --brand: #1f6feb;
-            --brand-dark: #0b3d91;
-            --ink: #1a202c;
-            --muted: #5a6572;
-            --soft: #f6f8fb;
-            --border: #e2e8f0;
+            --ink: #363636;
+            --title: #1a1a1a;
+            --link: #3273dc;
+            --muted: #6b7280;
+            --soft: #fafafa;
+            --border: #ededed;
+            --accent: #4a56c4;
         }
 
         body {
             font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--ink);
-            line-height: 1.7;
+            line-height: 1.75;
+            background: #fff;
         }
 
         h1, h2, h3, .paper-title {
             font-family: 'Google Sans', 'Noto Sans', sans-serif;
         }
 
+        a { color: var(--link); }
+
+        /* ---------- Hero ---------- */
         .hero-head {
-            background: linear-gradient(135deg, #0b3d91 0%, #1f6feb 100%);
-            color: #fff;
-            padding: 3.2rem 1rem 2.6rem;
+            background: #fff;
+            padding: 3rem 1rem 1.6rem;
             text-align: center;
         }
 
-        .hero-head .paper-title {
-            color: #fff;
+        .paper-title {
+            color: var(--title);
             font-weight: 700;
-            font-size: 2rem;
-            line-height: 1.25;
+            font-size: 2.15rem;
+            line-height: 1.28;
             max-width: 900px;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.4rem;
         }
 
-        .venue-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.16);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 999px;
-            padding: 0.25rem 1rem;
-            font-size: 0.85rem;
-            letter-spacing: 0.04em;
-            margin-bottom: 1.3rem;
+        .authors {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.9;
         }
 
-        .authors { font-size: 1.02rem; margin-bottom: 0.3rem; }
-        .affil { font-size: 0.9rem; opacity: 0.9; }
+        .authors a { color: var(--link); text-decoration: none; }
+        .authors a:hover { text-decoration: underline; }
+        .authors sup { color: var(--muted); }
 
-        .link-buttons { margin-top: 1.5rem; }
+        .affil {
+            font-size: 0.98rem;
+            color: var(--ink);
+            margin-bottom: 0.2rem;
+        }
+
+        .affil-note { font-size: 0.9rem; color: var(--muted); }
+
+        .link-buttons { margin-top: 1.6rem; }
 
         .link-buttons a {
             display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
-            background: #12213a;
+            gap: 0.5rem;
+            background: #363636;
             color: #fff;
             border-radius: 999px;
-            padding: 0.5rem 1.15rem;
+            padding: 0.5rem 1.2rem;
             margin: 0.3rem;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             text-decoration: none;
-            transition: transform 0.15s ease, background 0.15s ease;
+            transition: background 0.15s ease;
         }
 
-        .link-buttons a:hover { background: #000; transform: translateY(-2px); }
+        .link-buttons a:hover { background: #000; }
 
-        .section { padding: 2.4rem 1.25rem; }
-        .section-wrap { max-width: 900px; margin: 0 auto; }
+        /* ---------- Sections ---------- */
+        .section { padding: 2.2rem 1.25rem; }
+        .section-wrap { max-width: 880px; margin: 0 auto; }
 
         h2.sec-title {
-            font-size: 1.55rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            color: var(--brand-dark);
-            border-bottom: 3px solid var(--brand);
-            display: inline-block;
-            padding-bottom: 0.2rem;
-            margin-bottom: 1.2rem;
+            color: var(--title);
+            text-align: center;
+            margin-bottom: 1.3rem;
         }
 
-        .alt-bg { background: var(--soft); }
+        .alt-bg { background: var(--soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
+        /* ---------- Figures ---------- */
         .figure-box {
             background: #fff;
-            border: 1px dashed #b9c4d4;
+            border: 1px dashed #d3d8e0;
             border-radius: 10px;
             padding: 1rem;
             text-align: center;
-            margin: 1.4rem 0;
+            margin: 1.2rem 0;
         }
 
         .figure-box img { max-width: 100%; border-radius: 6px; }
@@ -118,17 +126,18 @@
             color: var(--muted);
             font-size: 0.9rem;
             padding: 2.6rem 1rem;
-            background: #f0f3f8;
+            background: #f4f5f8;
             border-radius: 6px;
         }
 
         .figure-box figcaption {
-            font-size: 0.87rem;
+            font-size: 0.88rem;
             color: var(--muted);
             margin-top: 0.7rem;
             text-align: left;
         }
 
+        /* ---------- Stats + cards ---------- */
         .stat-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -144,7 +153,7 @@
             text-align: center;
         }
 
-        .stat .big { font-size: 1.7rem; font-weight: 700; color: var(--brand-dark); }
+        .stat .big { font-size: 1.7rem; font-weight: 700; color: var(--accent); }
         .stat .lbl { font-size: 0.8rem; color: var(--muted); }
 
         .card-grid {
@@ -161,11 +170,11 @@
             padding: 1.1rem;
         }
 
-        .contrib-card b { color: var(--brand-dark); }
+        .contrib-card b { color: var(--accent); }
 
         .highlight {
-            background: #eaf2ff;
-            border-left: 4px solid var(--brand);
+            background: #f1f2fb;
+            border-left: 4px solid var(--accent);
             border-radius: 0 8px 8px 0;
             padding: 0.8rem 1.1rem;
             margin: 1.2rem 0;
@@ -174,16 +183,18 @@
         .read-more {
             display: inline-block;
             margin-top: 0.4rem;
-            color: var(--brand);
+            color: var(--link);
             font-weight: 600;
             text-decoration: none;
         }
+        .read-more:hover { text-decoration: underline; }
 
         code.bibtex {
             display: block;
             white-space: pre;
-            background: #12213a;
-            color: #e6edf3;
+            background: #f4f5f8;
+            color: #363636;
+            border: 1px solid var(--border);
             padding: 1.1rem;
             border-radius: 8px;
             overflow-x: auto;
@@ -191,14 +202,14 @@
         }
 
         footer.site-footer {
-            background: #12213a;
-            color: #cbd5e1;
+            background: #fff;
+            color: var(--muted);
             text-align: center;
-            padding: 1.6rem 1rem;
+            padding: 1.8rem 1rem;
             font-size: 0.84rem;
+            border-top: 1px solid var(--border);
         }
 
-        footer.site-footer a { color: #93c5fd; }
         .note { font-size: 0.85rem; color: var(--muted); font-style: italic; }
     </style>
 </head>
@@ -207,21 +218,29 @@
 
     <!-- ============================ HERO ============================ -->
     <header class="hero-head">
-        <div class="venue-badge">EMNLP Submission &nbsp;·&nbsp; Multimodal Engineering Reasoning</div>
-        <h1 class="paper-title">Do VLMs Reason Like Engineers?<br>A Benchmark and a Stage-wise Evaluation</h1>
-        <div class="authors">Anonymous Authors</div>
-        <div class="affil">EngVQA Benchmark &nbsp;·&nbsp; EngJudge Evaluation Framework</div>
-        <div class="link-buttons">
-            <!-- TODO: replace # with real links -->
-            <a href="#"><i class="fas fa-file-pdf"></i> Paper</a>
-            <a href="#"><i class="fas fa-file-alt"></i> arXiv</a>
-            <a href="#"><i class="fab fa-github"></i> Code</a>
-            <a href="#"><i class="fas fa-database"></i> Dataset</a>
+        <div class="section-wrap">
+            <h1 class="paper-title">Do VLMs Reason Like Engineers?<br>A Benchmark and a Stage-wise Evaluation</h1>
+
+            <!-- TODO: replace with the real author names / links / affiliation superscripts -->
+            <div class="authors">
+                <a href="#">Author One<sup>1</sup></a>,
+                <a href="#">Author Two<sup>1</sup></a>,
+                <a href="#">Author Three<sup>2</sup></a>,
+                <a href="#">Author Four<sup>1</sup></a>
+            </div>
+            <div class="affil"><sup>1</sup>Affiliation One &nbsp;&nbsp; <sup>2</sup>Affiliation Two</div>
+
+            <div class="link-buttons">
+                <!-- TODO: replace # with real links -->
+                <a href="#"><i class="fas fa-file-pdf"></i> Paper</a>
+                <a href="#"><i class="fas fa-file-alt"></i> arXiv</a>
+                <a href="#"><i class="fab fa-github"></i> Code</a>
+                <a href="#"><i class="fas fa-database"></i> Dataset</a>
+            </div>
         </div>
-        <p class="note" style="color:#cfe0ff;margin-top:0.9rem;">Code &amp; dataset to be released upon acceptance.</p>
     </header>
 
-    <!-- ============================ ABSTRACT / MOTIVATION ============================ -->
+    <!-- ============================ OVERVIEW ============================ -->
     <section class="section">
         <div class="section-wrap">
             <h2 class="sec-title">Overview</h2>
@@ -379,13 +398,12 @@
     <section class="section alt-bg">
         <div class="section-wrap">
             <h2 class="sec-title">BibTeX</h2>
-            <code class="bibtex">@inproceedings{engvqa_engjudge,
-  title     = {Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation},
-  author    = {Anonymous},
-  booktitle = {Proceedings of EMNLP},
-  year      = {2025}
+            <code class="bibtex">@article{engvqa_engjudge,
+  title   = {Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation},
+  author  = {Author One and Author Two and Author Three and Author Four},
+  journal = {arXiv preprint},
+  year    = {2025}
 }</code>
-            <p class="note">Citation to be updated upon acceptance.</p>
         </div>
     </section>
 
