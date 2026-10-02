@@ -28,6 +28,7 @@ export const INTERESTS: ResearchInterest[] = [
 ];
 
 export const NEWS: NewsItem[] = [
+  { date: "Sep 2026", content: "[ExperiGen](https://arxiv.org/abs/2602.07983) is accepted to NeurIPS 2026 Spotlight!!!" },
   { date: "June 2026", content: "[Do VLMs Reason Like Engineers? A Benchmark and a Stage-wise Evaluation](https://arxiv.org/abs/2606.10833) is available on arXiv."},
   { date: "May 2026", content: "Graduated from IIT Kharagpur" },
   { date: "Feb 2026", content: "[ExperiGen](https://arxiv.org/abs/2602.07983) is available on arXiv." },
@@ -53,7 +54,7 @@ export const PUBLICATIONS: Publication[] = [
     id: "p1",
     title: "Accelerating Social Science Research via Agentic Hypothesization and Experimentation",
     authors: ["JS Gupta*", "Harini SI*", "SK Singh*", "SM Tawseeq*", "YK Singla", "D Doermann", "RR Shah", "B Krishnamurthy"],
-    venue: "Under Review",
+    venue: "NeurIPS 2026 (Spotlight)",
     year: 2026,
     description: "A framework for end-to-end hypothesis discovery that uses a generator–experimenter loop inspired by Bayesian optimization to propose and validate hypotheses, significantly outperforming prior methods.",
     tags: ["Hypothesis Discovery", "Social Science"],
