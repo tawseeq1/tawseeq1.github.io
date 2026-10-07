@@ -4,7 +4,7 @@ export const PROFILE: Profile = {
   name: "Syed Mohamad Tawseeq",
   title: "Undergraduate",
   affiliation: "Indian Institute of Technology Kharagpur",
-  email: "theguysta56@gmail.com",
+  email: "tawseeq56@gmail.com",
   bio: `I recently graduated from the Indian Institute of Technology (IIT) Kharagpur with a Bachelor's degree in Chemical Engineering and a Micro-Specialization in Artificial Intelligence & Applications. Previously, I was a Research Intern at [Adobe MDSR Lab](https://adobe.mdsr.live/). Currently, at IIT Kharagpur, I work under the guidance of Prof. [Debaditya Roy](https://sites.google.com/view/debadityaroy/home?authuser=0) and Prof. [Somak Aditya](https://adityasomak.github.io/).
 
 My primary interests lie in LLM Reasoning and Multimodal Learning. I also explore topics such as automated scientific discovery and neurosymbolic AI. These experiences have made me more curious about how models can integrate logic with statistical learning to achieve verifiable intelligence. As a dedicated student passionate about artificial intelligence, I am eager to embark on a research career focused on advancing reasoning and explainability in AI systems and ensuring their responsible development.`,
@@ -12,7 +12,7 @@ My primary interests lie in LLM Reasoning and Multimodal Learning. I also explor
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { platform: 'email', url: 'mailto:theguysta56@gmail.com' },
+  { platform: 'email', url: 'mailto:tawseeq56@gmail.com' },
   { platform: 'scholar', url: 'https://scholar.google.com/citations?user=CijNWhoAAAAJ&hl=en', username: 'Google Scholar' },
   { platform: 'github', url: 'https://github.com/tawseeq1', username: 'tawseeq1' },
   { platform: 'twitter', url: 'https://twitter.com/smta56', username: '@smta56' },
