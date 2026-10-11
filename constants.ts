@@ -2,10 +2,10 @@ import { Profile, NewsItem, Publication, ResearchInterest, SocialLink } from './
 
 export const PROFILE: Profile = {
   name: "Syed Mohamad Tawseeq",
-  title: "Undergraduate",
-  affiliation: "Indian Institute of Technology Kharagpur",
+  title: "Scientific Trainee",
+  affiliation: "European Molecular Biology Laboratory (EMBL) Rome",
   email: "tawseeq56@gmail.com",
-  bio: `I recently graduated from the Indian Institute of Technology (IIT) Kharagpur with a Bachelor's degree in Chemical Engineering and a Micro-Specialization in Artificial Intelligence & Applications. Previously, I was a Research Intern at [Adobe MDSR Lab](https://adobe.mdsr.live/). Currently, at IIT Kharagpur, I work under the guidance of Prof. [Debaditya Roy](https://sites.google.com/view/debadityaroy/home?authuser=0) and Prof. [Somak Aditya](https://adityasomak.github.io/).
+  bio: `I am currently a Scientific Trainee at the [European Molecular Biology Laboratory (EMBL) Rome](https://www.embl.org/sites/rome/), working with [Fabio Petroni](https://petronilab.org/) on AI for scientific discovery. I graduated from the Indian Institute of Technology (IIT) Kharagpur with a Bachelor's degree in Chemical Engineering and a Micro-Specialization in Artificial Intelligence & Applications. Previously, I was a Research Intern at [Adobe MDSR Lab](https://adobe.mdsr.live/). At IIT Kharagpur, I worked under the guidance of Prof. [Debaditya Roy](https://sites.google.com/view/debadityaroy/home?authuser=0) and Prof. [Somak Aditya](https://adityasomak.github.io/).
 
 My primary interests lie in LLM Reasoning and Multimodal Learning. I also explore topics such as automated scientific discovery and neurosymbolic AI. These experiences have made me more curious about how models can integrate logic with statistical learning to achieve verifiable intelligence. As a dedicated student passionate about artificial intelligence, I am eager to embark on a research career focused on advancing reasoning and explainability in AI systems and ensuring their responsible development.`,
   avatarUrl: "be_iid_a.jpg", // Placeholder
